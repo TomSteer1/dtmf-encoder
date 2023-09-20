@@ -66,6 +66,7 @@ def play_dtmf_tone(stream, digits, length=0.2, rate=44100):
         digit=digit.upper()
         frames = []
         frames.append(sine_sine_wave(dtmf_freqs[digit][0], dtmf_freqs[digit][1], length, rate))
+        frames.append(sine_sine_wave(0, 0, length, rate))
         chunk = np.concatenate(frames) * 0.25
         joined_chunks.append(chunk)
         
@@ -93,29 +94,12 @@ def play_dtmf_tone(stream, digits, length=0.2, rate=44100):
         waveFile.close()
 
 if __name__ == '__main__':
-    stream = p.open(format=pyaudio.paFloat32,
-                    channels=1, rate=44100, output=1,frames_per_buffer=CHUNK)
-    
-
-    # Dial a telephone number.
-    if len(sys.argv) != 2:
-        a = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#', 'A', 'B', 'C', 'D']
-        digits = str(np.random.choice(a, 20)) # set random length of numbers to pluck from list
-        # below preps random list of numbers for inclusion into csv file
-        digits=digits.replace("[",'') # replace characters with null
-        digits=digits.replace("]",'')
-        digits=digits.replace("'",'')
-        digits=digits.replace("\n",'')
-        digits=digits.replace(" ",'') # replace space with null
-        # print(digits)
-        
-        # writes digits to csv file
-        with open('metadata.csv', 'w') as csvfile:
-            characters = csv.writer(csvfile, delimiter=' ')
-            characters.writerows(digits)
-    else:
+    if len(sys.argv) > 1:
+        stream = p.open(format=pyaudio.paFloat32,channels=1, rate=44100, output=1,frames_per_buffer=CHUNK)
         digits = sys.argv[1]
-    play_dtmf_tone(stream, digits)
-    
-    stream.close()
-    p.terminate()
+        play_dtmf_tone(stream, digits)
+        stream.close()
+        p.terminate()
+    else:
+        print("usage: python dtmf.py <number>")
+

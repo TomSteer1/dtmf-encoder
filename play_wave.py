@@ -5,7 +5,7 @@ import wave
 chunk = 1024  
 
 #open a wav format music  
-f = wave.open(r"/Users/stephenlilley/dtmf.wav","rb")  
+f = wave.open(r".//dtmf.wav","rb")  
 #instantiate PyAudio  
 p = pyaudio.PyAudio()  
 #open stream  

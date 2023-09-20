@@ -1,11 +1,11 @@
 import os
 import wave
-with wave.open('/Users/stephenlilley/dtmf.wav') as w:
+with wave.open('./dtmf.wav') as w:
     framerate = w.getframerate()
     frames = w.getnframes()
     channels = w.getnchannels()
     width = w.getsampwidth()
-    filesize = os.stat('/Users/stephenlilley/dtmf.wav')
+    filesize = os.stat('./dtmf.wav')
     time = frames / framerate
     print('sampling rate:', framerate, 'Hz')
     print('length:', frames, 'samples')
